@@ -1,4 +1,6 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState,  useReducer } from "react";
+
+import reducer from "./reducer"
 
 import spotfyWebApi from "spotify-web-api-js";
 
@@ -19,14 +21,15 @@ const spotify = new SpotifyWebApi(); // connect the react app with Spotify API
 
 function App() {
 
-  const [ { token, user } , dispatch] = useDataLayerValue();
+  // const [ {token, user}, dispatch] = useReducer(reducer, {user:{}});
 
-  // const [ token, dispatch ] = useDataLayerValue();
+  const [ {token, user}, dispatch] = useDataLayerValue();
 
-  TypeError: Object(...)()[Symbol.iterator]().next().value is undefined
+  // const [ {user}, dispatch] = useDataLayerValue();
 
-  
+  // const [ token , dispatch ] = useDataLayerValue();  // vídeo em 3:53:49
 
+  // TypeError: Object(...)()[Symbol.iterator]().next().value is undefined
   
 
   useEffect(() => {
@@ -60,9 +63,8 @@ function App() {
     return () => {};
   }, []);
 
-  console.log("token: ", token);
-
-  // console.log("user: ", user)
+  console.log("token: ", token)
+  console.log("user: ", user)
 
   return (
     <div className="App">

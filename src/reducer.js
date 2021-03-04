@@ -1,16 +1,16 @@
    
     export const initialState = {
-        user: null,
+        user: {},
         playlists: [],
         playing: false,
         item: null,
-        token: null
+        token: {}
 
     };
 
     const reducer = (state, action) => {
 
-        console.log("action: ", action);
+        // console.log("action: ", action);
 
         switch(action.type) {
 
