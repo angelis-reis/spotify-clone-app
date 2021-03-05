@@ -1,6 +1,6 @@
-import { React, useEffect, useState,  useReducer } from "react";
+import { React, useEffect, useState, useReducer } from "react";
 
-import reducer from "./reducer"
+import reducer from "./reducer";
 
 import spotfyWebApi from "spotify-web-api-js";
 
@@ -20,20 +20,11 @@ const spotify = new SpotifyWebApi(); // connect the react app with Spotify API
 // SpotifyWebApi documentation https://jmperezperez.com/spotify-web-api-js/#src-spotify-web-api.js-constr.prototype.getme
 
 function App() {
-
   // const [ {token, user}, dispatch] = useReducer(reducer, {user:{}});
 
-  const [ {token, user}, dispatch] = useDataLayerValue();
-
-  // const [ {user}, dispatch] = useDataLayerValue();
-
-  // const [ token , dispatch ] = useDataLayerValue();  // vídeo em 3:53:49
-
-  // TypeError: Object(...)()[Symbol.iterator]().next().value is undefined
-  
+  const [{ token, user }, dispatch] = useDataLayerValue();
 
   useEffect(() => {
-
     // every time the app runs, this useEffect runs and get the token from the Url
 
     const hash = getTokenFromUrl();
@@ -41,14 +32,11 @@ function App() {
 
     const _token = hash.access_token;
 
-    if (_token) {  
-
+    if (_token) {
       dispatch({
         type: "SET_TOKEN",
         token: _token,
       });
-
-      
 
       spotify.setAccessToken(_token); // pass the token tho the spotify Api
 
@@ -58,18 +46,22 @@ function App() {
           user: user,
         });
       });
+
+      spotify.getUserPlaylists().then((playlists) => {
+        dispatch({
+          type: "SET_PLAYLISTS",
+          playlists: playlists,
+        });
+      });
     }
 
     return () => {};
   }, []);
 
-  console.log("token: ", token)
-  console.log("user: ", user)
-
   return (
     <div className="App">
       {token ? ( // if has a token (login in spotfy) render player, else render login page
-        <Player />
+        <Player spotify={spotify} />
       ) : (
         <Login />
       )}
